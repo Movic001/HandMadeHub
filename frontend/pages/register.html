@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Register | HandmadeHub</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --primary-color: #6a994e;
+        --secondary-color: #a7c957;
+        --accent-color: #f2e8cf;
+        --text-dark: #386641;
+        --text-light: #f8f9fa;
+        --background-light: #ffffff;
+        --background-off: #f7f7f2;
+        --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        --transition: all 0.3s ease;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Poppins", sans-serif;
+        line-height: 1.6;
+        color: #333;
+        background-color: var(--background-off);
+      }
+
+      .container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      a {
+        text-decoration: none;
+        color: inherit;
+        transition: var(--transition);
+      }
+
+      /* Buttons */
+      .btn {
+        display: inline-block;
+        padding: 12px 24px;
+        border-radius: 30px;
+        font-weight: 600;
+        text-align: center;
+        cursor: pointer;
+        transition: var(--transition);
+        border: none;
+        font-size: 16px;
+      }
+
+      .btn-primary {
+        background-color: var(--primary-color);
+        color: var(--text-light);
+      }
+
+      .btn-primary:hover {
+        background-color: #588040;
+        transform: translateY(-2px);
+      }
+
+      .btn-secondary {
+        background-color: var(--text-light);
+        color: var(--text-dark);
+        border: 2px solid var(--primary-color);
+      }
+
+      .btn-secondary:hover {
+        background-color: var(--accent-color);
+        transform: translateY(-2px);
+      }
+
+      /* Navigation */
+      .navbar {
+        background-color: var(--background-light);
+        box-shadow: var(--shadow);
+        padding: 15px 0;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+      }
+
+      .navbar-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .logo {
+        font-size: 24px;
+        font-weight: 700;
+        color: var(--text-dark);
+      }
+
+      .logo span {
+        color: var(--primary-color);
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 30px;
+        list-style: none;
+      }
+
+      .nav-links li a {
+        color: #333;
+        font-weight: 500;
+        position: relative;
+      }
+
+      .nav-links li a:hover {
+        color: var(--primary-color);
+      }
+
+      .nav-links li a::after {
+        content: "";
+        position: absolute;
+        bottom: -5px;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background-color: var(--primary-color);
+        transition: var(--transition);
+      }
+
+      .nav-links li a:hover::after {
+        width: 100%;
+      }
+
+      .hamburger {
+        display: none;
+        cursor: pointer;
+        background: none;
+        border: none;
+        font-size: 24px;
+        color: #333;
+      }
+
+      /* Registration Form */
+      .register-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: calc(100vh - 76px);
+        padding: 60px 0;
+      }
+
+      .register-form {
+        background-color: var(--background-light);
+        border-radius: 15px;
+        box-shadow: var(--shadow);
+        width: 100%;
+        max-width: 600px;
+        padding: 40px;
+        margin: 0 20px;
+        transition: var(--transition);
+      }
+
+      .register-form:hover {
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      }
+
+      .register-form h2 {
+        color: var(--text-dark);
+        text-align: center;
+        margin-bottom: 30px;
+        font-size: 28px;
+        font-weight: 600;
+      }
+
+      .register-form input,
+      .register-form select {
+        width: 100%;
+        padding: 12px 15px;
+        margin-bottom: 20px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-family: "Poppins", sans-serif;
+        font-size: 16px;
+        transition: var(--transition);
+      }
+
+      .register-form input:focus,
+      .register-form select:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 2px rgba(106, 153, 78, 0.2);
+      }
+
+      .register-form input[type="submit"] {
+        background-color: var(--primary-color);
+        color: var(--text-light);
+        font-weight: 600;
+        cursor: pointer;
+        border: none;
+        padding: 14px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        border-radius: 30px;
+      }
+
+      .register-form input[type="submit"]:hover {
+        background-color: #588040;
+        transform: translateY(-2px);
+      }
+
+      .login-link {
+        text-align: center;
+        margin-top: 20px;
+        color: #666;
+        font-size: 15px;
+      }
+
+      .login-link a {
+        color: var(--primary-color);
+        font-weight: 600;
+      }
+
+      .login-link a:hover {
+        text-decoration: underline;
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 500;
+        color: #555;
+      }
+
+      .form-group input,
+      .form-group select {
+        margin-bottom: 0;
+      }
+
+      .form-row {
+        display: flex;
+        gap: 20px;
+      }
+
+      .form-row .form-group {
+        flex: 1;
+      }
+
+      /* Form validation styling */
+      .register-form input:invalid,
+      .register-form select:invalid {
+        border-color: #ff6b6b;
+      }
+
+      .register-form input:focus:invalid,
+      .register-form select:focus:invalid {
+        box-shadow: 0 0 0 2px rgba(255, 107, 107, 0.2);
+      }
+
+      .password-wrapper {
+        position: relative;
+      }
+
+      .toggle-password {
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        color: #999;
+      }
+
+      .toggle-password:hover {
+        color: var(--text-dark);
+      }
+
+      /* Responsive Design */
+      @media (max-width: 768px) {
+        .form-row {
+          flex-direction: column;
+          gap: 0;
+        }
+
+        .register-form {
+          padding: 30px 20px;
+        }
+      }
+
+      @media (max-width: 640px) {
+        .nav-links {
+          display: none;
+          position: absolute;
+          top: 70px;
+          left: 0;
+          width: 100%;
+          background-color: var(--background-light);
+          flex-direction: column;
+          padding: 20px;
+          box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+          z-index: 999;
+        }
+
+        .nav-links.active {
+          display: flex;
+        }
+
+        .hamburger {
+          display: block;
+        }
+
+        .register-form h2 {
+          font-size: 24px;
+        }
+      }
+
+      /* Animation */
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .register-form {
+        animation: fadeIn 0.5s ease-out;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navigation -->
+    <nav class="navbar">
+      <div class="container navbar-container">
+        <a href="index.html" class="logo">Handmade<span>Hub</span></a>
+        <button class="hamburger" id="mobile-menu">
+          <i class="fas fa-bars"></i>
+        </button>
+        <ul class="nav-links" id="nav-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="#">Browse Items</a></li>
+          <li><a href="#">About</a></li>
+          <li><a href="login.html">Login</a></li>
+          <li><a href="register.html" class="active">Register</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- Registration Form Section -->
+    <div class="register-container">
+      <form
+        action="../../server/routes/registerRoute.php"
+        method="POST"
+        class="register-form"
+      >
+        <h2>Create Your HandmadeHub Account</h2>
+
+        <div class="form-row">
+          <div class="form-group">
+            <input
+              type="text"
+              name="fullName"
+              placeholder="Full Name"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <input
+              type="text"
+              name="userName"
+              placeholder="Username"
+              required
+            />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <input type="email" name="email" placeholder="Email" required />
+        </div>
+
+        <div class="form-group">
+          <input
+            type="text"
+            name="mobile"
+            placeholder="Mobile Number"
+            required
+          />
+        </div>
+
+        <div class="form-group password-wrapper">
+          <input
+            type="password"
+            name="password"
+            id="password"
+            placeholder="Password"
+            required
+          />
+          <span class="toggle-password" onclick="togglePasswordVisibility()">
+            <i class="fas fa-eye"></i>
+          </span>
+        </div>
+
+        <div class="form-group">
+          <input type="text" name="address" placeholder="Address" required />
+        </div>
+
+        <div class="form-group">
+          <input type="text" name="city" placeholder="City" required />
+        </div>
+
+        <div class="form-group">
+          <select name="role" required>
+            <option value="">-- Select Role --</option>
+            <option value="buyer">Buyer</option>
+            <option value="seller">Seller</option>
+          </select>
+        </div>
+
+        <input type="submit" name="register" value="Register" />
+        <div class="login-link">
+          Already have an account? <a href="login.html">Login</a>
+        </div>
+      </form>
+    </div>
+
+    <script>
+      // Mobile Menu Toggle
+      const mobileMenu = document.getElementById("mobile-menu");
+      const navLinks = document.getElementById("nav-links");
+
+      mobileMenu.addEventListener("click", () => {
+        navLinks.classList.toggle("active");
+
+        // Change hamburger icon
+        const icon = mobileMenu.querySelector("i");
+        if (navLinks.classList.contains("active")) {
+          icon.classList.remove("fa-bars");
+          icon.classList.add("fa-times");
+        } else {
+          icon.classList.remove("fa-times");
+          icon.classList.add("fa-bars");
+        }
+      });
+
+      // Close menu when clicking outside
+      document.addEventListener("click", (e) => {
+        if (
+          !mobileMenu.contains(e.target) &&
+          !navLinks.contains(e.target) &&
+          navLinks.classList.contains("active")
+        ) {
+          navLinks.classList.remove("active");
+          const icon = mobileMenu.querySelector("i");
+          icon.classList.remove("fa-times");
+          icon.classList.add("fa-bars");
+        }
+      });
+
+      // Password visibility toggle
+      function togglePasswordVisibility() {
+        const passwordInput = document.getElementById("password");
+        const toggleIcon = document.querySelector(".toggle-password i");
+
+        if (passwordInput.type === "password") {
+          passwordInput.type = "text";
+          toggleIcon.classList.remove("fa-eye");
+          toggleIcon.classList.add("fa-eye-slash");
+        } else {
+          passwordInput.type = "password";
+          toggleIcon.classList.remove("fa-eye-slash");
+          toggleIcon.classList.add("fa-eye");
+        }
+      }
+
+      // Form validation
+      const form = document.querySelector(".register-form");
+
+      form.addEventListener("submit", (e) => {
+        const password = document.getElementById("password");
+
+        if (password.value.length < 6) {
+          e.preventDefault();
+          alert("Password must be at least 6 characters long");
+          password.focus();
+        }
+      });
+    </script>
+  </body>
+</html>
