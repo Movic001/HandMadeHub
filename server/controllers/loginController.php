@@ -20,7 +20,7 @@ class LoginController
             // Redirect based on role
             switch ($user['role']) {
                 case 'seller':
-                    $this->userModel->showAlert("login succesfully", "redirecting to the seller dashboard", "success", "../../frontend/pages/seller/sellerDashboard.php");
+                    $this->userModel->showAlert("login succesfully", "redirecting to the seller dashboard", "success", "../../frontend/pages/seller/pages/sellerDashboard.php");
                     // header("Location: ../../frontend/pages/seller/sellerDashboard.php");
                     break;
                 case 'buyer':

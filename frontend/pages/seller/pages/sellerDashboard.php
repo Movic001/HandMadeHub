@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>HandMadeHub Seller Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -398,6 +398,8 @@
             .main-content {
                 margin-left: 0;
                 padding: 15px;
+                width: 100%;
+                overflow-x: hidden;
             }
 
             .sidebar {
@@ -433,6 +435,29 @@
                 opacity: 1;
                 display: block;
             }
+
+            /* Table responsiveness */
+            .orders-table,
+            .products-table {
+                font-size: 0.85rem;
+            }
+
+            .orders-table th,
+            .orders-table td,
+            .products-table th,
+            .products-table td {
+                padding: 8px 10px;
+            }
+
+            /* Wrap table containers */
+            .orders-section {
+                overflow-x: auto;
+            }
+
+            /* Form responsiveness */
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
         }
 
         @media (max-width: 576px) {
@@ -441,7 +466,7 @@
             }
 
             .orders-table {
-                font-size: 0.9rem;
+                font-size: 0.8rem;
             }
 
             .actions-grid {
@@ -450,6 +475,59 @@
 
             .dashboard-title {
                 font-size: 1.5rem;
+            }
+
+            /* Better table display on small screens */
+            .orders-table,
+            .products-table {
+                display: block;
+                width: 100%;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            /* Adjust padding for tight spaces */
+            .main-content {
+                padding: 10px;
+            }
+
+            .orders-section,
+            .actions-section,
+            .settings-card {
+                padding: 15px;
+            }
+
+            /* Fix form controls on small screens */
+            .form-control {
+                font-size: 16px;
+                /* Prevents iOS zoom on focus */
+            }
+
+            /* Smaller margins between elements */
+            .dashboard-header {
+                margin-bottom: 20px;
+            }
+
+            .stats-container {
+                gap: 15px;
+                margin-bottom: 20px;
+            }
+
+            /* Better message layout */
+            .message-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .message-sender-pic {
+                margin-bottom: 10px;
+            }
+
+            /* Responsive buttons */
+            .form-button,
+            .logout-btn {
+                padding: 10px 15px;
+                width: 100%;
             }
         }
 
@@ -729,6 +807,22 @@
         .overlay.active {
             display: block;
         }
+
+        /* Fix for table overflow on mobile */
+        .orders-table,
+        .products-table {
+            width: 100%;
+            overflow-x: auto;
+            display: block;
+        }
+
+        /* Responsive containers */
+        .orders-section,
+        .actions-section,
+        .settings-card {
+            max-width: 100%;
+            overflow-x: hidden;
+        }
     </style>
 </head>
 
@@ -871,23 +965,23 @@
                     <tbody>
                         <tr>
                             <td>#1234</td>
-                            <td>Handcrafted Wooden Bowl</td>
-                            <td>Sarah Johnson</td>
-                            <td>May 18, 2025</td>
+                            <td>Wooden Bowl</td>
+                            <td>Sarah J.</td>
+                            <td>May 18</td>
                             <td><span class="status shipped">Shipped</span></td>
                         </tr>
                         <tr>
                             <td>#1235</td>
-                            <td>Ceramic Vase Set</td>
-                            <td>Michael Brown</td>
-                            <td>May 17, 2025</td>
+                            <td>Ceramic Set</td>
+                            <td>Michael B.</td>
+                            <td>May 17</td>
                             <td><span class="status pending">Pending</span></td>
                         </tr>
                         <tr>
                             <td>#1236</td>
                             <td>Knitted Scarf</td>
-                            <td>Emma White</td>
-                            <td>May 16, 2025</td>
+                            <td>Emma W.</td>
+                            <td>May 16</td>
                             <td><span class="status processing">Processing</span></td>
                         </tr>
                     </tbody>
@@ -932,10 +1026,9 @@
                     <thead>
                         <tr>
                             <th>Image</th>
-                            <th>Product Name</th>
+                            <th>Product</th>
                             <th>Price</th>
                             <th>Stock</th>
-                            <th>Status</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -944,10 +1037,9 @@
                             <td>
                                 <div class="product-image" style="background-color: #e0e0e0;"><i class="fas fa-image"></i></div>
                             </td>
-                            <td>Handcrafted Wooden Bowl</td>
+                            <td>Wooden Bowl</td>
                             <td>$45.00</td>
                             <td>12</td>
-                            <td><span class="status shipped">Active</span></td>
                             <td>
                                 <div class="action-buttons">
                                     <button class="action-btn edit-btn"><i class="fas fa-edit"></i></button>
@@ -959,10 +1051,9 @@
                             <td>
                                 <div class="product-image" style="background-color: #e0e0e0;"><i class="fas fa-image"></i></div>
                             </td>
-                            <td>Ceramic Vase Set</td>
+                            <td>Ceramic Set</td>
                             <td>$65.00</td>
                             <td>8</td>
-                            <td><span class="status shipped">Active</span></td>
                             <td>
                                 <div class="action-buttons">
                                     <button class="action-btn edit-btn"><i class="fas fa-edit"></i></button>
@@ -977,7 +1068,6 @@
                             <td>Knitted Scarf</td>
                             <td>$35.00</td>
                             <td>5</td>
-                            <td><span class="status shipped">Active</span></td>
                             <td>
                                 <div class="action-buttons">
                                     <button class="action-btn edit-btn"><i class="fas fa-edit"></i></button>
@@ -989,10 +1079,9 @@
                             <td>
                                 <div class="product-image" style="background-color: #e0e0e0;"><i class="fas fa-image"></i></div>
                             </td>
-                            <td>Macrame Wall Hanging</td>
+                            <td>Macrame Wall</td>
                             <td>$55.00</td>
                             <td>3</td>
-                            <td><span class="status shipped">Active</span></td>
                             <td>
                                 <div class="action-buttons">
                                     <button class="action-btn edit-btn"><i class="fas fa-edit"></i></button>
@@ -1088,77 +1177,45 @@
                             <th>Order ID</th>
                             <th>Product</th>
                             <th>Customer</th>
-                            <th>Date</th>
                             <th>Amount</th>
                             <th>Status</th>
-                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td>#1234</td>
-                            <td>Handcrafted Wooden Bowl</td>
-                            <td>Sarah Johnson</td>
-                            <td>May 18, 2025</td>
+                            <td>Wooden Bowl</td>
+                            <td>Sarah J.</td>
                             <td>$45.00</td>
                             <td><span class="status shipped">Shipped</span></td>
-                            <td>
-                                <div class="action-buttons">
-                                    <button class="action-btn edit-btn"><i class="fas fa-eye"></i></button>
-                                </div>
-                            </td>
                         </tr>
                         <tr>
                             <td>#1235</td>
-                            <td>Ceramic Vase Set</td>
-                            <td>Michael Brown</td>
-                            <td>May 17, 2025</td>
+                            <td>Ceramic Set</td>
+                            <td>Michael B.</td>
                             <td>$65.00</td>
                             <td><span class="status pending">Pending</span></td>
-                            <td>
-                                <div class="action-buttons">
-                                    <button class="action-btn edit-btn"><i class="fas fa-eye"></i></button>
-                                </div>
-                            </td>
                         </tr>
                         <tr>
                             <td>#1236</td>
                             <td>Knitted Scarf</td>
-                            <td>Emma White</td>
-                            <td>May 16, 2025</td>
+                            <td>Emma W.</td>
                             <td>$35.00</td>
                             <td><span class="status processing">Processing</span></td>
-                            <td>
-                                <div class="action-buttons">
-                                    <button class="action-btn edit-btn"><i class="fas fa-eye"></i></button>
-                                </div>
-                            </td>
                         </tr>
                         <tr>
                             <td>#1237</td>
-                            <td>Macrame Wall Hanging</td>
-                            <td>David Lee</td>
-                            <td>May 15, 2025</td>
+                            <td>Macrame Wall</td>
+                            <td>David L.</td>
                             <td>$55.00</td>
                             <td><span class="status shipped">Shipped</span></td>
-                            <td>
-                                <div class="action-buttons">
-                                    <button class="action-btn edit-btn"><i class="fas fa-eye"></i></button>
-                                </div>
-                            </td>
                         </tr>
                         <tr>
                             <td>#1238</td>
                             <td>Hand-painted Mug</td>
-                            <td>Lisa Chen</td>
-                            <td>May 14, 2025</td>
+                            <td>Lisa C.</td>
                             <td>$28.00</td>
                             <td><span class="status shipped">Shipped</span></td>
-                            <td>
-                                <div class="action-buttons">
-                                    <button class="action-btn edit-btn"><i class="fas fa-eye"></i></button>
-                                </div>
-                            </td>
                         </tr>
                     </tbody>
                 </table>
