@@ -285,25 +285,51 @@
             </div>
 
             <div class="orders-section">
-                <form id="productForm">
+                <form id="productForm" action="../../../../../HandMadeHub/server/routes/sellerRoute.php" method="POST" enctype="multipart/form-data">
                     <div class="form-grid">
                         <div class="form-group">
                             <label class="form-label">Product Name</label>
-                            <input type="text" class="form-control" placeholder="Enter product name">
+                            <input
+                                type="text"
+                                name="product_name"
+                                class="form-control"
+                                placeholder="Enter product name"
+                                required>
                         </div>
                         <div class="form-group">
                             <label class="form-label">Price ($)</label>
-                            <input type="number" class="form-control" placeholder="0.00" step="0.01">
+                            <input
+                                type="number"
+                                name="price"
+                                class="form-control"
+                                placeholder="0.00"
+                                step="0.01"
+                                required>
                         </div>
                     </div>
+
                     <div class="form-group">
                         <label class="form-label">Product Description</label>
-                        <textarea class="form-control" placeholder="Describe your product..."></textarea>
+                        <textarea
+                            name="description"
+                            class="form-control"
+                            placeholder="Describe your product..."
+                            required></textarea>
                     </div>
+                    <div class="form-group">
+                        <label class="form-label">Product Address</label>
+                        <input
+                            type="address"
+                            name="address"
+                            class="form-control"
+                            placeholder="Enter product address"
+                            required>
+                    </div>
+
                     <div class="form-grid">
                         <div class="form-group">
                             <label class="form-label">Category</label>
-                            <select class="form-control">
+                            <select name="category" class="form-control" required>
                                 <option value="">Select Category</option>
                                 <option value="jewelry">Jewelry</option>
                                 <option value="ceramics">Ceramics</option>
@@ -315,21 +341,40 @@
                         </div>
                         <div class="form-group">
                             <label class="form-label">Stock Quantity</label>
-                            <input type="number" class="form-control" placeholder="0" min="0">
+                            <input
+                                type="number"
+                                name="stock_quantity"
+                                class="form-control"
+                                placeholder="0"
+                                min="0"
+                                required>
                         </div>
                     </div>
+
                     <div class="form-group">
                         <label class="form-label">Product Images</label>
-                        <input type="file" class="form-control" multiple>
+                        <input
+                            type="file"
+                            name="images[]"
+                            class="form-control"
+                            multiple
+                            accept="image/*">
                     </div>
+
                     <div class="form-group">
                         <label class="form-label">Tags (comma separated)</label>
-                        <input type="text" class="form-control" placeholder="handmade, craft, art">
+                        <input
+                            type="text"
+                            name="tags"
+                            class="form-control"
+                            placeholder="handmade, craft, art">
                     </div>
+
                     <div class="form-group">
-                        <button type="submit" class="form-button">Add Product</button>
+                        <input type="submit" name="addProduct" class="form-button" values="Add Products ">
                     </div>
                 </form>
+
             </div>
         </section>
 
