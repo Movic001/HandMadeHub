@@ -500,6 +500,7 @@
                         <p style="margin-top: 5px; font-size: 0.8rem; color: #666;">Maximum file size: 5MB</p>
                     </div>
                 </div>
+                <!-- profile form-->
                 <form>
                     <div class="form-grid">
                         <div class="form-group">

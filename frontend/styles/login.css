@@ -21,7 +21,7 @@ body {
   line-height: 1.6;
   color: #333;
   background-color: var(--background-off);
-  background-image: url("/api/placeholder/1200/800");
+  background-image: url("../assets//images/Artisan/at/work/2.webp");
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
