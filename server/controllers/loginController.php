@@ -24,7 +24,7 @@ class LoginController
                     // header("Location: ../../frontend/pages/seller/sellerDashboard.php");
                     break;
                 case 'buyer':
-                    $this->userModel->showAlert("login succesfully", "redirecting to the buyer dashboard", "error", "../../frontend/pages/seller/buyerDashboard.php");
+                    $this->userModel->showAlert("login succesfully", "redirecting to the buyer dashboard", "success", "../../frontend/pages/buyer/pages/buyerDashboard.php");
                     // header("Location: ../../frontend/pages/buyer/buyerDashboard.php");
                     break;
                 default:

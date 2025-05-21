@@ -1,3 +1,22 @@
+<?php
+session_start();
+require_once __DIR__ . '/../../../../server/config/db.php';
+require_once __DIR__ . '/../../../../server/classes/sellerProduct.php';
+
+// ensure seller is logged in
+if (empty($_SESSION['user_id'])) {
+    header('Location: ../../login.html');
+    exit;
+}
+$sellerId = $_SESSION['user_id'];
+
+// 3) fetch products
+$db = (new Database())->connect();
+$model = new SellerProduct($db);
+$products = $model->getProductsBySeller($sellerId);
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -194,85 +213,69 @@
         </section>
 
         <!-- My Products Section -->
+
         <section id="products" class="content-section">
             <div class="dashboard-header">
                 <h1 class="dashboard-title">My Products</h1>
                 <p class="dashboard-subtitle">Manage your product listings.</p>
             </div>
 
-            <div class="orders-section">
+            <div class="products-section">
                 <div class="section-title">
                     <span>All Products</span>
-                    <a href="#add-product" class="view-all" data-section="add-product">Add New</a>
+                    <a href="addProduct.html" class="view-all">Add New</a>
                 </div>
                 <table class="products-table">
                     <thead>
                         <tr>
                             <th>Image</th>
                             <th>Product</th>
+                            <th>Description</th>
+                            <th>Category</th>
                             <th>Price</th>
                             <th>Stock</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>
-                                <div class="product-image" style="background-color: #e0e0e0;"><i class="fas fa-image"></i></div>
-                            </td>
-                            <td>Wooden Bowl</td>
-                            <td>$45.00</td>
-                            <td>12</td>
-                            <td>
-                                <div class="action-buttons">
-                                    <button class="action-btn edit-btn"><i class="fas fa-edit"></i></button>
-                                    <button class="action-btn delete-btn"><i class="fas fa-trash"></i></button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="product-image" style="background-color: #e0e0e0;"><i class="fas fa-image"></i></div>
-                            </td>
-                            <td>Ceramic Set</td>
-                            <td>$65.00</td>
-                            <td>8</td>
-                            <td>
-                                <div class="action-buttons">
-                                    <button class="action-btn edit-btn"><i class="fas fa-edit"></i></button>
-                                    <button class="action-btn delete-btn"><i class="fas fa-trash"></i></button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="product-image" style="background-color: #e0e0e0;"><i class="fas fa-image"></i></div>
-                            </td>
-                            <td>Knitted Scarf</td>
-                            <td>$35.00</td>
-                            <td>5</td>
-                            <td>
-                                <div class="action-buttons">
-                                    <button class="action-btn edit-btn"><i class="fas fa-edit"></i></button>
-                                    <button class="action-btn delete-btn"><i class="fas fa-trash"></i></button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="product-image" style="background-color: #e0e0e0;"><i class="fas fa-image"></i></div>
-                            </td>
-                            <td>Macrame Wall</td>
-                            <td>$55.00</td>
-                            <td>3</td>
-                            <td>
-                                <div class="action-buttons">
-                                    <button class="action-btn edit-btn"><i class="fas fa-edit"></i></button>
-                                    <button class="action-btn delete-btn"><i class="fas fa-trash"></i></button>
-                                </div>
-                            </td>
-                        </tr>
+                        <?php if (!empty($products)): ?>
+                            <?php foreach ($products as $prod): ?>
+                                <tr>
+                                    <td>
+                                        <?php if ($prod['image_path']): ?>
+                                            <img src="../../../uploads/products/<?= htmlspecialchars($prod['image_path']); ?>" width="50" alt="">
+                                        <?php elseif ($prod['image_path'] === null): ?>
+                                            <!--img src="../../../uploads/products</?= htmlspecialchars($prod['image_path']); ?>" width="50" alt=""-->
+                                        <?php else: ?>
+                                            <div class="placeholder"><i class="fas fa-image"></i></div>
+                                        <?php endif; ?>
+                                    </td>
+                                    <td><?= htmlspecialchars($prod['product_name']); ?></td>
+                                    <td><?= htmlspecialchars($prod['description']); ?></td>
+                                    <td><?= htmlspecialchars($prod['category']); ?></td>
+                                    <td>$<?= number_format($prod['price'], 2); ?></td>
+                                    <td><?= (int)$prod['stock_quantity']; ?></td>
+                                    <td>
+                                        <a href="editProduct.html?id=<?= $prod['id']; ?>" class="action-btn edit-btn">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <form method="POST" action="../../../../server/routes/sellerRoute.php" style="display:inline;">
+                                            <input type="hidden" name="action" value="deleteProduct">
+                                            <input type="hidden" name="product_id" value="<?= $prod['id']; ?>">
+                                            <button type="submit" class="action-btn delete-btn">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <tr>
+                                <td colspan="5">You have no products yet.</td>
+                            </tr>
+                        <?php endif; ?>
                     </tbody>
+
                 </table>
             </div>
         </section>

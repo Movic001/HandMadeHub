@@ -48,4 +48,23 @@ class SellerProduct
             ]);
         }
     }
+    /**
+     * Fetch all products for a specific seller
+     */
+    public function getProductsBySeller(int $sellerId): array
+    {
+        $sql = "SELECT p.*, pi.image_path
+                  FROM seller_products p
+             LEFT JOIN (
+                SELECT product_id, MIN(image_path) AS image_path
+                FROM product_images
+                GROUP BY product_id
+             ) pi ON p.id = pi.product_id
+                 WHERE p.seller_id = :seller_id
+              ORDER BY p.created_at DESC";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([':seller_id' => $sellerId]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }

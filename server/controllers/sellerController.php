@@ -74,4 +74,21 @@ class SellerController
         header('Location: ../../frontend/pages/sellerDashboard.html?status=product_added');
         exit;
     }
+
+    /**
+     * Display seller's products in the My Products view
+     */
+    public function listProducts(): void
+    {
+        // ensure seller is logged in
+        $sellerId = $_SESSION['user_id'] ?? null;
+        if (!$sellerId) {
+            header('Location: ../../frontend/pages/login.html');
+            exit;
+        }
+
+        $products = $this->model->getProductsBySeller($sellerId);
+        // include view file that loops through $products
+        include __DIR__ . '/../../frontend/pages/myProducts.php';
+    }
 }
