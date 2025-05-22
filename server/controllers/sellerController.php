@@ -71,7 +71,7 @@ class SellerController
         }
 
         // redirect back to seller dashboard or products list
-        header('Location: ../../frontend/pages/sellerDashboard.html?status=product_added');
+        header('Location: ../../frontend/pages/seller/pages/sellerDashboard.php?status=product_added');
         exit;
     }
 
@@ -90,5 +90,12 @@ class SellerController
         $products = $this->model->getProductsBySeller($sellerId);
         // include view file that loops through $products
         include __DIR__ . '/../../frontend/pages/myProducts.php';
+    }
+
+    //list all the product function
+    public function listAllProducts(): void
+    {
+        $products = $this->model->getAllProducts();
+        include __DIR__ . '/../../frontend/pages/buyer/pages/browseProducts.php';
     }
 }

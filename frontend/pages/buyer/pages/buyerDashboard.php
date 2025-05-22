@@ -1,6 +1,33 @@
 <?php
-// start the session
-session_start();
+// if session is not start start it
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+require_once __DIR__ . '/../../../../server/config/db.php';
+require_once __DIR__ . '/../../../../server/classes/sellerProduct.php';
+require_once __DIR__ . '/../../../../server/classes/order.php';
+
+// ensure seller is logged in
+if (empty($_SESSION['user_id'])) {
+    header('Location: ../../login.html');
+    exit;
+}
+$sellerId = $_SESSION['user_id'];
+
+// Check if buyer is logged in
+if (!isset($_SESSION['user_id'])) {
+    header("Location: ../login.php");
+    exit;
+}
+
+// 3) fetch products
+$db = (new Database())->connect();
+$model = new SellerProduct($db);
+$products = $model->getAllProducts($sellerId);
+
+$orderModel = new Order($db);
+$buyer_id = $_SESSION['user_id'];
+$orders = $orderModel->getOrdersByBuyerId($buyer_id);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -10,7 +37,7 @@ session_start();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HandmadeHub Buyer Dashboard</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="../styles/buyerDashboard.css">
+    <link rel="stylesheet" href="/HandmadeHub/frontend/pages/buyer/styles/buyerDashboard.css">
 </head>
 
 <body>
@@ -120,41 +147,41 @@ session_start();
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>56789</td>
-                            <td>Knitted Scarf</td>
-                            <td><span class="status shipped">Shipped</span></td>
-                            <td>May 24, 2025</td>
-                            <td>
-                                <button class="action-btn">Track</button>
-                                <button class="action-btn secondary">Details</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>56790</td>
-                            <td>Wooden Spoon</td>
-                            <td><span class="status delivered">Delivered</span></td>
-                            <td>May 18, 2025</td>
-                            <td>
-                                <button class="action-btn">Review</button>
-                                <button class="action-btn secondary">Details</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>56791</td>
-                            <td>Ceramic Mug</td>
-                            <td><span class="status pending">Pending</span></td>
-                            <td>-</td>
-                            <td>
-                                <button class="action-btn">Contact Seller</button>
-                                <button class="action-btn secondary">Cancel</button>
-                            </td>
-                        </tr>
+                        <?php if (!empty($orders)): ?>
+                            <?php foreach ($orders as $order): ?>
+                                <tr>
+                                    <td><?= htmlspecialchars($order['order_id']) ?></td>
+                                    <td><?= htmlspecialchars($order['product_name']) ?></td>
+                                    <td><span class="status <?= strtolower($order['status']) ?>"><?= htmlspecialchars($order['status']) ?></span></td>
+                                    <td><?= $order['estimated_delivery'] ? htmlspecialchars($order['estimated_delivery']) : '-' ?></td>
+                                    <td>
+                                        <?php if ($order['status'] == 'Shipped'): ?>
+                                            <button class="action-btn">Track</button>
+                                        <?php elseif ($order['status'] == 'Delivered'): ?>
+                                            <button class="action-btn">Review</button>
+                                        <?php elseif ($order['status'] == 'Pending'): ?>
+                                            <button class="action-btn">Contact Seller</button>
+                                            <button class="action-btn">Message Seller</button>
+                                            <button class="action-btn secondary">Cancel</button>
+                                        <?php endif; ?>
+                                        <button class="action-btn secondary">Details</button>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <tr>
+                                <td colspan="5">No orders found.</td>
+                            </tr>
+                        <?php endif; ?>
                     </tbody>
                 </table>
                 <a href="#" class="view-more">View More Orders</a>
             </div>
         </div>
+
+
+
+
 
         <!-- Messages Tab Content -->
         <div class="tab-content" id="messages-content">
@@ -229,51 +256,37 @@ session_start();
             </div>
 
             <div class="products-grid">
-                <div class="product-card">
-                    <div class="product-image">
-                        <div style="font-size: 3rem; color: #ddd;"><i class="fas fa-image"></i></div>
-                    </div>
-                    <div class="product-details">
-                        <div class="product-name">Clay Pot Set</div>
-                        <div class="product-price">$30.00</div>
-                        <div class="product-seller">by Seller A</div>
-                        <div class="product-actions">
-                            <button class="action-btn">View</button>
-                            <button class="action-btn">Order</button>
+                <?php foreach ($products as $product): ?>
+                    <div class="product-card">
+                        <div class="product-image">
+                            <?php if (!empty($product['image_path'])): ?>
+                                <img src="../../../uploads/products/<?= htmlspecialchars($product['image_path']) ?>" alt="Product Image" style="width:100%; height: 150px; object-fit:cover;">
+                            <?php else: ?>
+                                <div style="font-size: 3rem; color: #ddd;"><i class="fas fa-image"></i></div>
+                            <?php endif; ?>
                         </div>
-                    </div>
-                </div>
+                        <div class="product-details">
+                            <div class="product-name"><?= htmlspecialchars($product['product_name']) ?></div>
+                            <div class="product-price"># <?= number_format($product['price'], 2) ?></div>
+                            <div class="product-seller">Address: <?= htmlspecialchars($product['address']) ?></div>
+                            <div class="product-seller">Description: <?= htmlspecialchars($product['description']) ?></div>
+                            <div class="product-actions">
+                                <button class="action-btn">View</button>
+                                <?php var_dump($product['id']); ?>
 
-                <div class="product-card">
-                    <div class="product-image">
-                        <div style="font-size: 3rem; color: #ddd;"><i class="fas fa-image"></i></div>
-                    </div>
-                    <div class="product-details">
-                        <div class="product-name">Beaded Necklace</div>
-                        <div class="product-price">$15.00</div>
-                        <div class="product-seller">by Seller B</div>
-                        <div class="product-actions">
-                            <button class="action-btn">View</button>
-                            <button class="action-btn">Order</button>
-                        </div>
-                    </div>
-                </div>
+                                <form action="../../../../server/routes/createOrderRoute.php" method="POST">
+                                    <input type="hidden" name="product_id" value="<?= $product['id'] ?>">
+                                    <button type="submit" class="btn btn-primary">Order Now</button>
+                                </form>
 
-                <div class="product-card">
-                    <div class="product-image">
-                        <div style="font-size: 3rem; color: #ddd;"><i class="fas fa-image"></i></div>
-                    </div>
-                    <div class="product-details">
-                        <div class="product-name">Crochet Blanket</div>
-                        <div class="product-price">$45.00</div>
-                        <div class="product-seller">by Seller C</div>
-                        <div class="product-actions">
-                            <button class="action-btn">View</button>
-                            <button class="action-btn">Order</button>
+
+
+                            </div>
                         </div>
                     </div>
-                </div>
+                <?php endforeach; ?>
             </div>
+
         </div>
 
         <!-- Account Tab Content -->
@@ -337,7 +350,7 @@ session_start();
         </div>
     </footer>
 
-    <script src="../script/buyerDashboard.js"></script>
+    <script src="/HandmadeHub/frontend/pages/buyer/script/buyerDashboard.js" defer></script>
 </body>
 
 </html>

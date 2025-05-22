@@ -67,4 +67,22 @@ class SellerProduct
         $stmt->execute([':seller_id' => $sellerId]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    //get all product function
+    public function getAllProducts(): array
+    {
+        $sql = "SELECT p.*, pi.image_path
+              FROM seller_products p
+         LEFT JOIN users u ON p.seller_id = u.id
+         LEFT JOIN (
+            SELECT product_id, MIN(image_path) AS image_path
+            FROM product_images
+            GROUP BY product_id
+         ) pi ON p.id = pi.product_id
+         ORDER BY p.created_at DESC";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
