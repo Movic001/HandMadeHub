@@ -42,6 +42,7 @@ class Order
             o.estimated_delivery,
             o.buyer_id,
             u.fullName AS buyer_name,
+            u.mobile AS buyer_phone,
             p.product_name,
             p.price AS amount,
             pi.image_path

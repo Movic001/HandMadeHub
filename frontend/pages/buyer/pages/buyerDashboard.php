@@ -267,16 +267,15 @@ $orders = $orderModel->getOrdersByBuyerId($buyer_id);
                         </div>
                         <div class="product-details">
                             <div class="product-name"><?= htmlspecialchars($product['product_name']) ?></div>
-                            <div class="product-price"># <?= number_format($product['price'], 2) ?></div>
+                            <div class="product-price" style="color:green"># <?= number_format($product['price'], 2) ?></div>
                             <div class="product-seller">Address: <?= htmlspecialchars($product['address']) ?></div>
                             <div class="product-seller">Description: <?= htmlspecialchars($product['description']) ?></div>
                             <div class="product-actions">
                                 <button class="action-btn">View</button>
-                                <?php var_dump($product['id']); ?>
 
                                 <form action="../../../../server/routes/createOrderRoute.php" method="POST">
                                     <input type="hidden" name="product_id" value="<?= $product['id'] ?>">
-                                    <button type="submit" class="btn btn-primary">Order Now</button>
+                                    <button type="submit" class="btn-btn-primary">Order Now</button>
                                 </form>
 
 

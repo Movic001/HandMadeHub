@@ -1,6 +1,6 @@
 :root {
   --primary-color: #6a994e;
-  --secondary-color: #abdb3d;
+  --secondary-color: #a7c957;
   --accent-color: #f2e8cf;
   --light-bg: #f8f9fa;
   --dark-text: #333;
@@ -298,6 +298,16 @@ header {
   cursor: pointer;
   transition: var(--transition);
   margin-right: 0.5rem;
+}
+
+.btn-btn-primary {
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  background-color: var(--primary-color);
+  color: var(--white);
+  border: none;
+  cursor: pointer;
 }
 
 .action-btn:hover {

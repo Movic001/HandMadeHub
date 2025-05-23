@@ -422,7 +422,8 @@ $sellerOrders = $orderModel->getOrdersBySellerId($seller_id);
                             <th>Customer</th>
                             <th>Amount</th>
                             <th>Status</th>
-                            <th>Message</th>
+                            <th>message</th>
+                            <th>contact</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -449,7 +450,21 @@ $sellerOrders = $orderModel->getOrdersBySellerId($seller_id);
                                     </td>
 
                                     <td>
-                                        <button class="action-btn" onclick="location.href='messageBuyer.php?buyer_id=<?= $order['buyer_id'] ?>&order_id=<?= $order['order_id'] ?>'">Message Buyer</button>
+                                        <?php
+                                        $buyerPhone = preg_replace('/[^0-9]/', '', $order['buyer_phone']);
+                                        $whatsAppMessage = urlencode("Hello " . $order['buyer_name'] . ", I’m contacting you about your order #" . $order['order_id'] . " for \"" . $order['product_name'] . "\" on HandmadeHub.");
+                                        $whatsAppLink = "https://wa.me/$buyerPhone?text=$whatsAppMessage";
+                                        ?>
+                                        <a href="<?= $whatsAppLink ?>" target="_blank" style="color: dimgrey; font-size: 19px">
+                                            Message on WhatsApp
+                                        </a>
+                                    </td>
+
+
+                                    <td>
+                                        <a href="tel:<?= $buyerPhone ?>" style="color: dimgrey; font-size: 19px">
+                                            Call Buyer
+                                        </a>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>

@@ -184,7 +184,7 @@ a {
 
 .login-image {
   flex: 1;
-  background-image: url("/api/placeholder/600/800");
+  background-image: url("../assets/images/bg_image.webp");
   background-size: cover;
   background-position: center;
   display: flex;
