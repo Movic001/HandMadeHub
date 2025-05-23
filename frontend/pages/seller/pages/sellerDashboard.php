@@ -2,6 +2,7 @@
 session_start();
 require_once __DIR__ . '/../../../../server/config/db.php';
 require_once __DIR__ . '/../../../../server/classes/sellerProduct.php';
+require_once __DIR__ . '/../../../../server/classes/order.php';
 
 // ensure seller is logged in
 if (empty($_SESSION['user_id'])) {
@@ -14,6 +15,17 @@ $sellerId = $_SESSION['user_id'];
 $db = (new Database())->connect();
 $model = new SellerProduct($db);
 $products = $model->getProductsBySeller($sellerId);
+
+
+
+//display orders in orders section
+
+$orderModel = new Order($db);
+if (!isset($seller_id) && isset($_SESSION['user_id'])) {
+    $seller_id = $_SESSION['user_id'];
+}
+
+$sellerOrders = $orderModel->getOrdersBySellerId($seller_id);
 
 ?>
 
@@ -410,45 +422,44 @@ $products = $model->getProductsBySeller($sellerId);
                             <th>Customer</th>
                             <th>Amount</th>
                             <th>Status</th>
+                            <th>Message</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>#1234</td>
-                            <td>Wooden Bowl</td>
-                            <td>Sarah J.</td>
-                            <td>$45.00</td>
-                            <td><span class="status shipped">Shipped</span></td>
-                        </tr>
-                        <tr>
-                            <td>#1235</td>
-                            <td>Ceramic Set</td>
-                            <td>Michael B.</td>
-                            <td>$65.00</td>
-                            <td><span class="status pending">Pending</span></td>
-                        </tr>
-                        <tr>
-                            <td>#1236</td>
-                            <td>Knitted Scarf</td>
-                            <td>Emma W.</td>
-                            <td>$35.00</td>
-                            <td><span class="status processing">Processing</span></td>
-                        </tr>
-                        <tr>
-                            <td>#1237</td>
-                            <td>Macrame Wall</td>
-                            <td>David L.</td>
-                            <td>$55.00</td>
-                            <td><span class="status shipped">Shipped</span></td>
-                        </tr>
-                        <tr>
-                            <td>#1238</td>
-                            <td>Hand-painted Mug</td>
-                            <td>Lisa C.</td>
-                            <td>$28.00</td>
-                            <td><span class="status shipped">Shipped</span></td>
-                        </tr>
+                        <?php if (!empty($sellerOrders)): ?>
+                            <?php foreach ($sellerOrders as $order): ?>
+                                <tr>
+                                    <td>#<?= htmlspecialchars($order['order_id']) ?></td>
+
+                                    <td>
+                                        <div style="display: flex; align-items: center; gap: 10px;">
+                                            <!--img src="<n?= htmlspecialchars($order['product_image']) ?>" alt="Product Image" style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px;"-->
+                                            <?= htmlspecialchars($order['product_name']) ?>
+                                        </div>
+                                    </td>
+
+                                    <td><?= htmlspecialchars($order['buyer_name']) ?></td>
+
+                                    <td>$<?= number_format($order['amount'], 2) ?></td>
+
+                                    <td>
+                                        <span class="status <?= strtolower($order['status']) ?>">
+                                            <?= htmlspecialchars($order['status']) ?>
+                                        </span>
+                                    </td>
+
+                                    <td>
+                                        <button class="action-btn" onclick="location.href='messageBuyer.php?buyer_id=<?= $order['buyer_id'] ?>&order_id=<?= $order['order_id'] ?>'">Message Buyer</button>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <tr>
+                                <td colspan="5">No orders found for your products.</td>
+                            </tr>
+                        <?php endif; ?>
                     </tbody>
+
                 </table>
             </div>
         </section>
