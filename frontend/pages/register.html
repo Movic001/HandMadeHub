@@ -395,10 +395,12 @@
 
         <div class="form-group">
           <input
-            type="text"
+            type="number"
             name="mobile"
-            placeholder="Mobile Number"
+            placeholder="Mobile Number (+CountryCode Mobile Number)"
             required
+            pattern="^\+\d{1,4}\d{6,}$"
+            title="Include country code e.g. +2349012345678"
           />
         </div>
 

@@ -22,6 +22,16 @@ class RegisterController
                 'role'     => $_POST['role'] ?? 'user'
             ];
 
+            // ✅ Validate mobile number BEFORE proceeding
+            if (!preg_match('/^\+\d{1,4}\d{6,}$/', $formData['mobile'])) {
+                $this->showAlert(
+                    "Invalid Mobile Format",
+                    "Please include your country code (e.g., +2349012345678).",
+                    "error",
+                    "../../frontend/pages/register.html"
+                );
+            }
+
             $user = new User($GLOBALS['db']);
 
             try {

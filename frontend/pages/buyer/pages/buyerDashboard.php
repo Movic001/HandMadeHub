@@ -160,10 +160,16 @@ $orders = $orderModel->getOrdersByBuyerId($buyer_id);
                                         <?php elseif ($order['status'] == 'Delivered'): ?>
                                             <button class="action-btn">Review</button>
                                         <?php elseif ($order['status'] == 'Pending'): ?>
-                                            <button class="action-btn">Contact Seller</button>
-                                            <button class="action-btn">Message Seller</button>
+                                            <?php
+                                            $sellerPhone = preg_replace('/[^0-9]/', '', $order['seller_phone']);
+                                            $whatsAppMessage = urlencode("Hello " . $order['seller_name'] . ", I have a question about my order #" . $order['order_id'] . " for \"" . $order['product_name'] . "\" on HandmadeHub.");
+                                            $whatsAppLink = "https://wa.me/$sellerPhone?text=$whatsAppMessage";
+                                            ?>
+                                            <a href="tel:<?= $sellerPhone ?>" class="action-btn" style="text-decoration:none">Call Seller</a>
+                                            <a href="<?= $whatsAppLink ?>" class="action-btn" target="_blank" style="text-decoration:none">Message on WhatsApp</a>
                                             <button class="action-btn secondary">Cancel</button>
                                         <?php endif; ?>
+
                                         <button class="action-btn secondary">Details</button>
                                     </td>
                                 </tr>
