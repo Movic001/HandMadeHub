@@ -255,7 +255,7 @@ $sellerOrders = $orderModel->getOrdersBySellerId($seller_id);
                                 <tr>
                                     <td>
                                         <?php if ($prod['image_path']): ?>
-                                            <img src="../../../uploads/products/<?= htmlspecialchars($prod['image_path']); ?>" width="50" alt="">
+                                            <img src="../../../<?= htmlspecialchars($prod['image_path']); ?>" width="50" alt="">
                                         <?php elseif ($prod['image_path'] === null): ?>
                                             <!--img src="../../../uploads/products</?= htmlspecialchars($prod['image_path']); ?>" width="50" alt=""-->
                                         <?php else: ?>

@@ -260,7 +260,7 @@ $orders = $orderModel->getOrdersByBuyerId($buyer_id);
                     <div class="product-card">
                         <div class="product-image">
                             <?php if (!empty($product['image_path'])): ?>
-                                <img src="../../../uploads/products/<?= htmlspecialchars($product['image_path']) ?>" alt="Product Image" style="width:100%; height: 150px; object-fit:cover;">
+                                <img src="../../../<?= htmlspecialchars($product['image_path']) ?>" alt="Product Image" style="width:100%; height: 150px; object-fit:cover;">
                             <?php else: ?>
                                 <div style="font-size: 3rem; color: #ddd;"><i class="fas fa-image"></i></div>
                             <?php endif; ?>
