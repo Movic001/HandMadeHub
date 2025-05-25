@@ -85,4 +85,17 @@ class SellerProduct
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function searchProductsByName(string $search): array
+    {
+        $sql = "SELECT DISTINCT product_name 
+            FROM seller_products 
+            WHERE product_name LIKE :search
+            ORDER BY product_name
+            LIMIT 10";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([':search' => '%' . $search . '%']);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }

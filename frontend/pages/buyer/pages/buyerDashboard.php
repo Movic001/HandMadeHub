@@ -37,7 +37,8 @@ $orders = $orderModel->getOrdersByBuyerId($buyer_id);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HandmadeHub Buyer Dashboard</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/HandmadeHub/frontend/pages/buyer/styles/buyerDashboard.css">
+    <!--link rel="stylesheet" href="/HandmadeHub/frontend/pages/buyer/styles/buyerDashboard.css"-->
+    <link rel="stylesheet" href="../styles/buyerDashboard.css">
 </head>
 
 <body>
@@ -51,10 +52,10 @@ $orders = $orderModel->getOrdersByBuyerId($buyer_id);
             <span>HandmadeHub</span>
         </div>
         <div class="header-actions">
-            <button class="logout-btn">
+            <a href="../../../../server/routes/logOutRoute.php" class="logout-btn">
                 <i class="fas fa-lock"></i>
                 Logout
-            </button>
+            </a>
         </div>
     </header>
 
@@ -107,7 +108,7 @@ $orders = $orderModel->getOrdersByBuyerId($buyer_id);
         <!-- Dashboard Tab Content -->
         <div class="tab-content active" id="dashboard-content">
             <div class="welcome-banner">
-                <h2>Welcome Back, Sarah!</h2>
+                <h2>Welcome Back, <?= htmlspecialchars($_SESSION['full_name']) ?>!</h2>
                 <p>Here's what's happening with your HandmadeHub account today.</p>
             </div>
 
@@ -160,14 +161,20 @@ $orders = $orderModel->getOrdersByBuyerId($buyer_id);
                                         <?php elseif ($order['status'] == 'Delivered'): ?>
                                             <button class="action-btn">Review</button>
                                         <?php elseif ($order['status'] == 'Pending'): ?>
+
                                             <?php
                                             $sellerPhone = preg_replace('/[^0-9]/', '', $order['seller_phone']);
                                             $whatsAppMessage = urlencode("Hello " . $order['seller_name'] . ", I have a question about my order #" . $order['order_id'] . " for \"" . $order['product_name'] . "\" on HandmadeHub.");
                                             $whatsAppLink = "https://wa.me/$sellerPhone?text=$whatsAppMessage";
                                             ?>
-                                            <a href="tel:<?= $sellerPhone ?>" class="action-btn" style="text-decoration:none">Call Seller</a>
-                                            <a href="<?= $whatsAppLink ?>" class="action-btn" target="_blank" style="text-decoration:none">Message on WhatsApp</a>
-                                            <button class="action-btn secondary">Cancel</button>
+                                            <a href="tel:<?= $sellerPhone ?>" class="action-btn-btn" style="text-decoration:none">Call Seller</a>
+                                            <a href="<?= $whatsAppLink ?>" class="action-btn-btn" target="_blank" style="text-decoration:none">Message on WhatsApp</a>
+                                            <!-- Cancel Order Button -->
+                                            <form method="POST" action="../../../../server/routes/cancelOrderRoute.php" style=" display:inline;">
+                                                <input type="hidden" name="order_id" value="<?= $order['order_id']; ?>">
+                                                <button type="submit" class="action-btn-btn">Cancel</button>
+                                            </form>
+
                                         <?php endif; ?>
 
                                         <button class="action-btn secondary">Details</button>
@@ -236,13 +243,13 @@ $orders = $orderModel->getOrdersByBuyerId($buyer_id);
         <div class="tab-content" id="browse-content">
             <h2>Browse Products</h2>
             <p>Discover unique handmade items from talented artisans.</p>
-
+            <!--update Product Filters dynamically-->
             <div class="product-filters">
                 <div class="search-bar">
                     <i class="fas fa-search"></i>
                     <input type="text" placeholder="Search products...">
                 </div>
-                <div class="filter-dropdown">
+                <!--div class="filter-dropdown">
                     <select>
                         <option>All Categories</option>
                         <option>Home Decor</option>
@@ -258,12 +265,13 @@ $orders = $orderModel->getOrdersByBuyerId($buyer_id);
                         <option>Price: High to Low</option>
                         <option>Newest First</option>
                     </select>
-                </div>
+                </div-->
             </div>
 
             <div class="products-grid">
                 <?php foreach ($products as $product): ?>
-                    <div class="product-card">
+                    <!-- Product Card -->
+                    <div class="product-card" data-name="<?= strtolower(htmlspecialchars($product['product_name'])) ?>">
                         <div class="product-image">
                             <?php if (!empty($product['image_path'])): ?>
                                 <img src="../../../<?= htmlspecialchars($product['image_path']) ?>" alt="Product Image" style="width:100%; height: 150px; object-fit:cover;">
@@ -278,20 +286,19 @@ $orders = $orderModel->getOrdersByBuyerId($buyer_id);
                             <div class="product-seller">Description: <?= htmlspecialchars($product['description']) ?></div>
                             <div class="product-actions">
                                 <button class="action-btn">View</button>
-
+                                <!-- add to card -->
                                 <form action="../../../../server/routes/createOrderRoute.php" method="POST">
                                     <input type="hidden" name="product_id" value="<?= $product['id'] ?>">
                                     <button type="submit" class="btn-btn-primary">Order Now</button>
                                 </form>
-
-
-
                             </div>
                         </div>
                     </div>
                 <?php endforeach; ?>
             </div>
-
+            <div id="no-results" style="display:none; color: red; font-weight: bold; margin-top: 20px;">
+                No products found.
+            </div>
         </div>
 
         <!-- Account Tab Content -->
@@ -355,7 +362,55 @@ $orders = $orderModel->getOrdersByBuyerId($buyer_id);
         </div>
     </footer>
 
-    <script src="/HandmadeHub/frontend/pages/buyer/script/buyerDashboard.js" defer></script>
+    <script>
+        // search functionality codes
+        document.addEventListener('DOMContentLoaded', () => {
+            const searchInput = document.querySelector('.search-bar input');
+            const productsGrid = document.querySelector('.products-grid');
+            const noResults = document.getElementById('no-results');
+
+            // Save original product order
+            const originalProducts = Array.from(productsGrid.querySelectorAll('.product-card'));
+
+            searchInput.addEventListener('input', () => {
+                const query = searchInput.value.trim().toLowerCase();
+
+                if (!query) {
+                    // Clear search: show all products in original order
+                    productsGrid.innerHTML = '';
+                    originalProducts.forEach(p => {
+                        p.style.display = '';
+                        productsGrid.appendChild(p);
+                    });
+                    noResults.style.display = 'none';
+                    return;
+                }
+
+                const matched = [];
+                originalProducts.forEach(product => {
+                    const name = product.dataset.name || '';
+                    if (name.includes(query)) {
+                        matched.push(product);
+                        product.style.display = '';
+                    } else {
+                        product.style.display = 'none';
+                    }
+                });
+
+                if (matched.length > 0) {
+                    productsGrid.innerHTML = '';
+                    matched.forEach(p => productsGrid.appendChild(p));
+                    noResults.style.display = 'none';
+                } else {
+                    productsGrid.innerHTML = ''; // clear grid if no matches
+                    noResults.style.display = 'block';
+                }
+            });
+        });
+    </script>
+    <script src="../script/buyerDashboard.js"></script>
+    <!--script src="/HandmadeHub/frontend/pages/buyer/script/buyerDashboard.js" defer></script-->
+
 </body>
 
 </html>

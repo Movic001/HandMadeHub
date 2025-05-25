@@ -147,6 +147,7 @@ img {
   padding: 80px 0;
   text-align: center;
   background-image: url("../assets/images/bg_items.webp");
+  background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
   position: relative;

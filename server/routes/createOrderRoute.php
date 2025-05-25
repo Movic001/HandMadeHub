@@ -2,6 +2,7 @@
 session_start();
 require_once '../config/db.php';
 require_once '../classes/Order.php';
+require_once '../classes/users.php';
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: ../../frontend/pages/login.php");
@@ -10,6 +11,7 @@ if (!isset($_SESSION['user_id'])) {
 
 $database = new Database();
 $db = $database->connect();
+$user = new User($db);
 
 $buyer_id = $_SESSION['user_id'];
 
@@ -26,13 +28,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['product_id']) && !emp
 
     $orderModel = new Order($db);
     if ($orderModel->createOrder($buyer_id, $product_id)) {
-        echo "<script>
-            alert('Order successfully placed! Click on “Orders” to see your orders.');
-            window.location.href = '../../frontend/pages/buyer/pages/buyerDashboard.php';
-        </script>";
+        // Order created successfully
+        $user->showAlert("Order created successfully!", "Your order has been placed.", "success", "../../frontend/pages/buyer/pages/buyerDashboard.php");
     } else {
-        die("Error: Failed to create order.");
+        // Failed to create order
+        $user->showAlert("Order creation failed.", "Please try again later.", "error", "../../frontend/pages/buyer/pages/buyerDashboard.php");
+        // die("Error: Failed to create order.");
     }
 } else {
-    echo "Invalid request. No product ID received.";
+    $user->showAlert("Invalid request.", "No product ID received.", "error", "../../frontend/pages/buyer/pages/buyerDashboard.php");
+    //echo "Invalid request. No product ID received.";
 }
