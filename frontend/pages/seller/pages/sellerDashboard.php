@@ -265,7 +265,7 @@ $sellerOrders = $orderModel->getOrdersBySellerId($seller_id);
                                     <td><?= htmlspecialchars($prod['product_name']); ?></td>
                                     <td><?= htmlspecialchars($prod['description']); ?></td>
                                     <td><?= htmlspecialchars($prod['category']); ?></td>
-                                    <td>$<?= number_format($prod['price'], 2); ?></td>
+                                    <td>#<?= number_format($prod['price'], 2); ?></td>
                                     <td><?= (int)$prod['stock_quantity']; ?></td>
                                     <td>
                                         <a href="editProduct.html?id=<?= $prod['id']; ?>" class="action-btn edit-btn">
@@ -312,7 +312,7 @@ $sellerOrders = $orderModel->getOrdersBySellerId($seller_id);
                                 required>
                         </div>
                         <div class="form-group">
-                            <label class="form-label">Price ($)</label>
+                            <label class="form-label">Price (#)</label>
                             <input
                                 type="number"
                                 name="price"
@@ -441,7 +441,7 @@ $sellerOrders = $orderModel->getOrdersBySellerId($seller_id);
 
                                     <td><?= htmlspecialchars($order['buyer_name']) ?></td>
 
-                                    <td>$<?= number_format($order['amount'], 2) ?></td>
+                                    <td>#<?= number_format($order['amount'], 2) ?></td>
 
                                     <td>
                                         <span class="status <?= strtolower($order['status']) ?>">

@@ -1,5 +1,8 @@
 <?php
+require_once __DIR__ . '/../config/db.php';
 require_once __DIR__ . '/../classes/sellerProduct.php';
+require_once __DIR__ . '/../classes/users.php';
+
 
 class SellerController
 {
@@ -26,9 +29,14 @@ class SellerController
         if (!empty($_FILES['images']['size'])) {
             foreach ($_FILES['images']['size'] as $size) {
                 $fileSizeKb = $size / 1024;
-                if ($fileSizeKb > 5000) {
-                    header('Location: ../../frontend/pages/addProduct.html?error=file_too_large');
-                    exit;
+                if ($fileSizeKb > 4000) {
+                    // Instantiate user just to use showAlert
+                    $database = new Database();
+                    $db = $database->connect();
+                    $user = new User($db);
+                    $user->showAlert("File Too Large", "Each image must be less than 4MB.", "error", "../../frontend/pages/seller/pages/sellerDashboard.php?error=file_too_large");
+                    // header('Location: ../../frontend/pages/addProduct.html?error=file_too_large');
+                    // exit;
                 }
             }
         }
@@ -70,9 +78,12 @@ class SellerController
             $this->model->addImages($productId, $imagePaths);
         }
 
-        // redirect back to seller dashboard or products list
-        header('Location: ../../frontend/pages/seller/pages/sellerDashboard.php?status=product_added');
-        exit;
+        // Instantiate user just to use showAlert
+        $database = new Database();
+        $db = $database->connect();
+        $user = new User($db);
+        // show success alert
+        $user->showAlert("Product Added", "Your product has been added successfully.", "success", "../../frontend/pages/seller/pages/sellerDashboard.php?status=product_added");
     }
 
     /**
