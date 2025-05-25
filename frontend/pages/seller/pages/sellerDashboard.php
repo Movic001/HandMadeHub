@@ -271,7 +271,7 @@ $sellerOrders = $orderModel->getOrdersBySellerId($seller_id);
                                         <a href="editProduct.html?id=<?= $prod['id']; ?>" class="action-btn edit-btn">
                                             <i class="fas fa-edit"></i>
                                         </a>
-                                        <form method="POST" action="../../../../server/routes/sellerRoute.php" style="display:inline;">
+                                        <form method="POST" action="../../../../server/routes/sellerDeleteRoute.php" style="display:inline;">
                                             <input type="hidden" name="action" value="deleteProduct">
                                             <input type="hidden" name="product_id" value="<?= $prod['id']; ?>">
                                             <button type="submit" class="action-btn delete-btn">

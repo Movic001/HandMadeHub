@@ -98,4 +98,17 @@ class SellerProduct
         $stmt->execute([':search' => '%' . $search . '%']);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function deleteProduct(int $productId): bool
+    {
+        // Optional: Delete related product images first to maintain data integrity
+        $sqlImages = "DELETE FROM product_images WHERE product_id = :product_id";
+        $stmtImages = $this->db->prepare($sqlImages);
+        $stmtImages->execute([':product_id' => $productId]);
+
+        // Delete the product itself
+        $sql = "DELETE FROM seller_products WHERE id = :product_id";
+        $stmt = $this->db->prepare($sql);
+        return $stmt->execute([':product_id' => $productId]);
+    }
 }
