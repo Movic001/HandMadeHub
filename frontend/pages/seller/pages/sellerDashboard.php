@@ -58,9 +58,9 @@ $sellerOrders = $orderModel->getOrdersBySellerId($seller_id);
             </button>
         </div>
         <div class="profile-section">
-            <div class="profile-pic">JD</div>
+            <div class="profile-pic">DP</div>
             <div class="profile-info">
-                <div class="profile-name">Ibrahim</div>
+                <div class="profile-name"><?= htmlspecialchars($_SESSION['full_name']); ?></div>
             </div>
         </div>
         <nav class="sidebar-menu">
@@ -104,7 +104,7 @@ $sellerOrders = $orderModel->getOrdersBySellerId($seller_id);
             </ul>
         </nav>
         <div class="logout">
-            <a href="../../../../server/routes/logOutRoute.php" style="text-decoration: none;" class="logout-btn" id="logoutBtn">
+            <a href="../../../../server/routes/logOutRoute.php" style="text-decoration: none;" class="logout-btn" id="logoutBtn2">
                 <i class="fas fa-sign-out-alt"></i>
                 <span class="menu-text">Logout</span>
             </a>
