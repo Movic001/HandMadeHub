@@ -1,11 +1,11 @@
 :root {
   --primary-color: #5c6bc0;
   --secondary-color: #7986cb;
-  --accent-color: #3949ab;
+  --accent-color: #a7c957;
   --text-color: #333;
   --text-light: #fff;
   --bg-light: #f9f9f9;
-  --bg-dark: #212121;
+  --bg-dark: #6a994e;
   --success-color: #4caf50;
   --warning-color: #ff9800;
   --danger-color: #f44336;
@@ -449,6 +449,11 @@ body {
   .form-grid {
     grid-template-columns: 1fr;
   }
+  /* .footer-content {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+  } */
 }
 
 @media (max-width: 576px) {

@@ -38,6 +38,7 @@ $sellerOrders = $orderModel->getOrdersBySellerId($seller_id);
     <title>HandMadeHub Seller Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../styles/sellerDashboard.css">
+    <link rel="stylesheet" href="../../footer.css">
 </head>
 
 <body>
@@ -656,6 +657,8 @@ $sellerOrders = $orderModel->getOrdersBySellerId($seller_id);
                 </form>
             </div>
         </section>
+
+        <?php include '../../../../frontend/pages/footer.html'; ?>
     </main>
 
     <script src="../scripts/sellerDashboard.js"></script>

@@ -37,8 +37,9 @@ $orders = $orderModel->getOrdersByBuyerId($buyer_id);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HandmadeHub Buyer Dashboard</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <!--link rel="stylesheet" href="/HandmadeHub/frontend/pages/buyer/styles/buyerDashboard.css"-->
-    <link rel="stylesheet" href="../styles/buyerDashboard.css">
+    <link rel="stylesheet" href="/HandmadeHub/frontend/pages/buyer/styles/buyerDashboard.css" -->
+    <!--link rel="stylesheet" href="../styles/buyerDashboard.css"-->
+    <link rel="stylesheet" href="../../footer.css">
 </head>
 
 <body>
@@ -285,7 +286,7 @@ $orders = $orderModel->getOrdersByBuyerId($buyer_id);
                             <div class="product-seller">Address: <?= htmlspecialchars($product['address']) ?></div>
                             <div class="product-seller">Description: <?= htmlspecialchars($product['description']) ?></div>
                             <div class="product-actions">
-                                <button class="action-btn">View</button>
+                                <button class="btn-btn-primary">View</button>
                                 <!-- add to card -->
                                 <form action="../../../../server/routes/createOrderRoute.php" method="POST">
                                     <input type="hidden" name="product_id" value="<?= $product['id'] ?>">
@@ -350,17 +351,10 @@ $orders = $orderModel->getOrdersByBuyerId($buyer_id);
                 </ul>
             </div>
         </div>
+        <?php include '../../../../frontend/pages/footer.html'; ?>
     </main>
 
-    <!-- Footer -->
-    <footer id="footer">
-        <div class="footer-links">
-            <a href="#">About</a>
-            <a href="#">Help</a>
-            <a href="#">Contact</a>
-            <a href="#">Terms & Privacy</a>
-        </div>
-    </footer>
+
 
     <script>
         // search functionality codes
@@ -408,8 +402,8 @@ $orders = $orderModel->getOrdersByBuyerId($buyer_id);
             });
         });
     </script>
-    <script src="../script/buyerDashboard.js"></script>
-    <!--script src="/HandmadeHub/frontend/pages/buyer/script/buyerDashboard.js" defer></script-->
+    <!--script src="../script/buyerDashboard.js"></script-->
+    <script src="/HandmadeHub/frontend/pages/buyer/script/buyerDashboard.js" defer></script>
 
 </body>
 
