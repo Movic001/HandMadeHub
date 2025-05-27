@@ -88,7 +88,7 @@ header {
 .sidebar {
   background-color: var(--primary-color);
   color: var(--white);
-  width: 250px;
+  width: 270px;
   position: fixed;
   top: 70px;
   left: 0;
