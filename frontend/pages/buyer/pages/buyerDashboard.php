@@ -275,12 +275,12 @@ $orders = $orderModel->getOrdersByBuyerId($buyer_id);
                     <div class="product-card" data-name="<?= strtolower(htmlspecialchars($product['product_name'])) ?>">
                         <div class="product-image">
                             <?php if (!empty($product['image_path'])): ?>
-                                <img src="../../../<?= htmlspecialchars($product['image_path']) ?>" alt="Product Image" style="width:100%; height: 150px; object-fit:cover;">
+                                <img src="../../../<?= htmlspecialchars($product['image_path']) ?>" alt="Product Image" style="width:100%; height: auto; object-fit:cover;">
                             <?php else: ?>
                                 <div style="font-size: 3rem; color: #ddd;"><i class="fas fa-image"></i></div>
                             <?php endif; ?>
                         </div>
-                        <div class="product-details">
+                        <div class="product-details" style="margin-top: 110px;">
                             <div class="product-name"><?= htmlspecialchars($product['product_name']) ?></div>
                             <div class="product-price" style="color:green"># <?= number_format($product['price'], 2) ?></div>
                             <div class="product-seller">Address: <?= htmlspecialchars($product['address']) ?></div>

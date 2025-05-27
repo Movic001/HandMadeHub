@@ -99,14 +99,37 @@ class SellerProduct
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    // public function deleteProduct(int $productId): bool
+    // {
+    //     // Optional: Delete related product images first to maintain data integrity
+    //     $sqlImages = "DELETE FROM product_images WHERE product_id = :product_id";
+    //     $stmtImages = $this->db->prepare($sqlImages);
+    //     $stmtImages->execute([':product_id' => $productId]);
+
+    //     // Delete the product itself
+    //     $sql = "DELETE FROM seller_products WHERE id = :product_id";
+    //     $stmt = $this->db->prepare($sql);
+    //     return $stmt->execute([':product_id' => $productId]);
+    // }
     public function deleteProduct(int $productId): bool
     {
-        // Optional: Delete related product images first to maintain data integrity
+        // Step 1: Check if there are orders for this product
+        $checkSql = "SELECT COUNT(*) FROM orders WHERE product_id = :product_id";
+        $checkStmt = $this->db->prepare($checkSql);
+        $checkStmt->execute([':product_id' => $productId]);
+        $orderCount = $checkStmt->fetchColumn();
+
+        if ($orderCount > 0) {
+            // Don't delete — return false or handle it accordingly
+            return false;
+        }
+
+        // Step 2: Delete product images
         $sqlImages = "DELETE FROM product_images WHERE product_id = :product_id";
         $stmtImages = $this->db->prepare($sqlImages);
         $stmtImages->execute([':product_id' => $productId]);
 
-        // Delete the product itself
+        // Step 3: Delete the product itself
         $sql = "DELETE FROM seller_products WHERE id = :product_id";
         $stmt = $this->db->prepare($sql);
         return $stmt->execute([':product_id' => $productId]);

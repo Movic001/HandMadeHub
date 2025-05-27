@@ -15,24 +15,46 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($action === 'deleteProduct') {
         $productId = intval($_POST['product_id'] ?? 0);
 
-        // You may want to check if the product belongs to the logged-in seller here
-
         if ($productId > 0) {
             $deleted = $sellerProduct->deleteProduct($productId);
 
             if ($deleted) {
-                $user->showAlert("Success", "Product deleted successfully.", "success", "../../frontend/pages/seller/pages/sellerDashboard.php");
-                // $_SESSION['success'] = "Product deleted successfully.";
+                $user->showAlert(
+                    "Success",
+                    "Product deleted successfully.",
+                    "success",
+                    "../../frontend/pages/seller/pages/sellerDashboard.php"
+                );
             } else {
-                $user->showAlert("Error", "Failed to delete the product.", "error", "../../frontend/pages/seller/pages/sellerDashboard.php");
-                //$_SESSION['error'] = "Failed to delete the product.";
+                // Check if the product couldn't be deleted due to orders
+                $checkSql = "SELECT COUNT(*) FROM orders WHERE product_id = :product_id";
+                $stmt = $conn->prepare($checkSql);
+                $stmt->execute([':product_id' => $productId]);
+                $orderCount = $stmt->fetchColumn();
+
+                if ($orderCount > 0) {
+                    $user->showAlert(
+                        "Cannot Delete Product",
+                        "This product has existing orders and cannot be deleted.",
+                        "warning",
+                        "../../frontend/pages/seller/pages/sellerDashboard.php"
+                    );
+                } else {
+                    $user->showAlert(
+                        "Error",
+                        "Failed to delete the product. Please try again.",
+                        "error",
+                        "../../frontend/pages/seller/pages/sellerDashboard.php"
+                    );
+                }
             }
         } else {
-            $user->showAlert("Error", "Invalid product ID.", "error", "../../frontend/pages/seller/pages/sellerDashboard.php");
-            //$_SESSION['error'] = "Invalid product ID.";
+            $user->showAlert(
+                "Error",
+                "Invalid product ID.",
+                "error",
+                "../../frontend/pages/seller/pages/sellerDashboard.php"
+            );
         }
-        // Redirect back to seller dashboard or wherever
-        //header("Location: ../../frontend/pages/buyer/pages/buyerDashboard.php"); // Redirect back to seller dashboard or wherever
-        //exit();
     }
 }
