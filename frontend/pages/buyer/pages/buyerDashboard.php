@@ -283,8 +283,12 @@ $orders = $orderModel->getOrdersByBuyerId($buyer_id);
                         <div class="product-details">
                             <div class="product-name"><?= htmlspecialchars($product['product_name']) ?></div>
                             <div class="product-price" style="color:green"># <?= number_format($product['price'], 2) ?></div>
-                            <div class="product-seller">Address: <?= htmlspecialchars($product['address']) ?></div>
-                            <div class="product-seller">Description: <?= htmlspecialchars($product['description']) ?></div>
+                            <div class="product-seller">
+                                <h4> Address: </h4> <?= htmlspecialchars($product['address']) ?>
+                            </div>
+                            <div class="product-seller">
+                                <h4> Description:</h4> <?= htmlspecialchars($product['description']) ?>
+                            </div>
                             <div class="product-actions">
                                 <button class="btn-btn-primary">View</button>
                                 <!-- add to card -->
