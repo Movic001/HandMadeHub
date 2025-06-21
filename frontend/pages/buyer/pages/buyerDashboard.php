@@ -66,6 +66,10 @@ $orders = $orderModel->getOrdersByBuyerId($buyer_id);
             <i class="fas fa-home"></i>
             <span class="nav-text">Dashboard</span>
         </div>
+        <div class="nav-item" data-tab="browse">
+            <i class="fas fa-shopping-bag"></i>
+            <span class="nav-text">Browse Products</span>
+        </div>
         <div class="nav-item" data-tab="orders">
             <i class="fas fa-box"></i>
             <span class="nav-text">Orders</span>
@@ -74,10 +78,7 @@ $orders = $orderModel->getOrdersByBuyerId($buyer_id);
             <i class="fas fa-comment"></i>
             <span class="nav-text">Messages</span>
         </div>
-        <div class="nav-item" data-tab="browse">
-            <i class="fas fa-shopping-bag"></i>
-            <span class="nav-text">Browse Products</span>
-        </div>
+
         <div class="nav-item" data-tab="account">
             <i class="fas fa-user"></i>
             <span class="nav-text">Account</span>
@@ -91,15 +92,16 @@ $orders = $orderModel->getOrdersByBuyerId($buyer_id);
                 <div class="tab active" data-tab="dashboard">
                     <i class="fas fa-home"></i> Dashboard
                 </div>
+                <div class="tab" data-tab="browse">
+                    <i class="fas fa-shopping-bag"></i> Browse Products
+                </div>
                 <div class="tab" data-tab="orders">
                     <i class="fas fa-box"></i> Orders
                 </div>
                 <div class="tab" data-tab="messages">
                     <i class="fas fa-comment"></i> Messages
                 </div>
-                <div class="tab" data-tab="browse">
-                    <i class="fas fa-shopping-bag"></i> Browse Products
-                </div>
+
                 <div class="tab" data-tab="account">
                     <i class="fas fa-user"></i> Account
                 </div>
@@ -168,8 +170,9 @@ $orders = $orderModel->getOrdersByBuyerId($buyer_id);
                                             $whatsAppMessage = urlencode("Hello " . $order['seller_name'] . ", I have a question about my order #" . $order['order_id'] . " for \"" . $order['product_name'] . "\" on HandmadeHub.");
                                             $whatsAppLink = "https://wa.me/$sellerPhone?text=$whatsAppMessage";
                                             ?>
-                                            <a href="tel:<?= $sellerPhone ?>" class="action-btn-btn" style="text-decoration:none">Call Seller</a>
-                                            <a href="<?= $whatsAppLink ?>" class="action-btn-btn" target="_blank" style="text-decoration:none">Message on WhatsApp</a>
+                                            <a href="tel:<?= $sellerPhone ?>" class="action-btn-btn" style="text-decoration:none">
+                                                <i class="fas fa-phone"></i></a>
+                                            <a href="<?= $whatsAppLink ?>" id="whatsapp-btn" class="action-btn-btn" target="_blank" style="text-decoration:none"><i class="fab fa-whatsapp"></i></a>
                                             <!-- Cancel Order Button -->
                                             <form method="POST" action="../../../../server/routes/cancelOrderRoute.php" style=" display:inline;">
                                                 <input type="hidden" name="order_id" value="<?= $order['order_id']; ?>">
@@ -177,8 +180,6 @@ $orders = $orderModel->getOrdersByBuyerId($buyer_id);
                                             </form>
 
                                         <?php endif; ?>
-
-                                        <button class="action-btn secondary">Details</button>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
